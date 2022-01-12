@@ -23,6 +23,7 @@ public class CommentServiceImplementation implements CommentService {
         this.postRepository = postRepository;
         this.userRepository = userRepository;
     }
+
     @Override
     public CommentModel makeComment(Long userId, Long postId, CommentModel comment) {
 
