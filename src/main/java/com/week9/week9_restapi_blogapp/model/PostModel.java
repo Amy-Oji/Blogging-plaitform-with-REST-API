@@ -1,5 +1,7 @@
 package com.week9.week9_restapi_blogapp.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,10 +26,12 @@ public class PostModel {
     private String body;
 
     @ManyToOne
-    @JoinColumn(name = "userPosts")
-    private UserModel user;
+    @JsonBackReference
+    @JoinColumn(name = "userId")
+    private UserModel userId;
 
-    @OneToMany(mappedBy = "post")
+
+    @OneToMany(mappedBy = "postId")
     private List<CommentModel> listOfComments = new ArrayList<>();
 
     @OneToMany(mappedBy = "post")

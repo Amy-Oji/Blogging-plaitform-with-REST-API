@@ -17,17 +17,17 @@ public class CommentModel {
     private Long commentId;
 
     @Column(nullable = false, columnDefinition = "TEXT")
-    private String commentBody;
+    private String comment;
 
     @ManyToOne
-    @JoinColumn(name = "postComment_post")
-    private PostModel post;
+    @JoinColumn(name = "user_id")
+    private UserModel userId;
 
     @ManyToOne
-    @JoinColumn(name = "postComment_user")
-    private UserModel user;
+    @JoinColumn(name = "post_id")
+    private PostModel postId;
 
-    private String comments;
+//    private String comments;
 
     @OneToMany
     private List<CommentLikes> commentLikes = new ArrayList<>();

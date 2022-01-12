@@ -1,5 +1,6 @@
 package com.week9.week9_restapi_blogapp.repository;
 
+import com.week9.week9_restapi_blogapp.dto.PostRequestDTO;
 import com.week9.week9_restapi_blogapp.model.PostModel;
 import com.week9.week9_restapi_blogapp.model.UserModel;
 import org.springframework.data.domain.Example;
@@ -12,6 +13,9 @@ import java.util.Optional;
 @Repository
 public interface PostRepository extends JpaRepository<PostModel, Long> {
 
-    PostModel findByPostId(Long id);
-    List<PostModel> findAllByUserModel(UserModel userModel);
+    Optional<PostModel> findByPostId(Long id); // postModel was here and not optional
+
+//    Optional<PostModel> findByPostId();
+//    List<PostModel> findAllByUserModel(UserModel userModel);
+//    PostModel save(PostRequestDTO postRequestDTO);
 }

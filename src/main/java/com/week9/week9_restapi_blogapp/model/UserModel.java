@@ -28,6 +28,7 @@ public class UserModel {
     private String password;
 
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "userId")
     private List<PostModel> userPosts = new ArrayList<>();
+
 }

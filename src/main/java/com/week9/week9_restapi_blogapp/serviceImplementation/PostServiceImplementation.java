@@ -1,13 +1,11 @@
 package com.week9.week9_restapi_blogapp.serviceImplementation;
 
-import com.week9.week9_restapi_blogapp.dto.ResponseDTO;
 import com.week9.week9_restapi_blogapp.model.PostLikes;
 import com.week9.week9_restapi_blogapp.model.PostModel;
 import com.week9.week9_restapi_blogapp.model.UserModel;
 import com.week9.week9_restapi_blogapp.repository.PostRepository;
 import com.week9.week9_restapi_blogapp.repository.UserRepository;
 import com.week9.week9_restapi_blogapp.service.PostService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,16 +15,27 @@ import java.util.List;
 public class PostServiceImplementation implements PostService {
 
     private final PostRepository postRepository;
+    private final UserRepository userRepository;
 
     @Autowired
-    public PostServiceImplementation(PostRepository postRepository) {
+    public PostServiceImplementation(PostRepository postRepository, UserRepository userRepository) {
         this.postRepository = postRepository;
+        this.userRepository = userRepository;
     }
 
     @Override
-    public void addPost(UserModel user, PostModel post) {
-        post.setUser(user);
-        postRepository.save(post);
+    public PostModel addPost(Long id, PostModel postModel) {
+        UserModel userModel = userRepository.findById(id).orElseThrow(NullPointerException::new);
+
+        if(userModel != null){
+            postModel.setUserId(userModel);
+            postRepository.save(postModel);
+            return postModel;
+        }
+//        PostModel postModel1 = new PostModel();
+//        postModel1.setTitle(postModel.getTitle());
+//        postModel1.setBody(postModel.getBody());
+        return null;
     }
 
     @Override
