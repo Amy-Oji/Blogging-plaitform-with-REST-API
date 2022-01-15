@@ -8,6 +8,7 @@ import com.week9.week9_restapi_blogapp.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,11 +17,13 @@ public class PostServiceImplementation implements PostService {
 
     private final PostRepository postRepository;
     private final UserRepository userRepository;
+    private final UserServiceImplementation userService;
 
     @Autowired
-    public PostServiceImplementation(PostRepository postRepository, UserRepository userRepository) {
+    public PostServiceImplementation(PostRepository postRepository, UserRepository userRepository, UserServiceImplementation userService) {
         this.postRepository = postRepository;
         this.userRepository = userRepository;
+        this.userService = userService;
     }
 
     @Override
@@ -33,26 +36,13 @@ public class PostServiceImplementation implements PostService {
             userModel.getUserPosts().add(postModel); //added
             return postModel;
             }
-//        PostModel postModel1 = new PostModel();
-//        postModel1.setTitle(postModel.getTitle());
-//        postModel1.setBody(postModel.getBody());
         return null;
         }
 
-//        @Override
-//        public List<PostLikes> getAllPost (UserModel user){
-//            return null;
-//
-//        }
 
         @Override
         public List<PostModel> getPostsByUser (UserModel userModel){
             return postRepository.findAllByUserModel(userModel);
-        }
-
-        @Override
-        public void updatePost (PostModel post){
-
         }
 
         @Override
@@ -66,7 +56,8 @@ public class PostServiceImplementation implements PostService {
             return postRepository.getPostModelByPostId(id).get();
         }
 
-    // add post to favourite
+
+
     @Override
     public  String addPostToFavouriteList(Long userId,Long postId){
         PostModel post = postRepository.getById(postId);
@@ -78,37 +69,38 @@ public class PostServiceImplementation implements PostService {
         userRepository.save(user);
         return  "Post added to favourite";
     }
+    @Override
+  public List<PostModel> findPostByFriends(Long userId){
+        UserModel userModel = userRepository.getById(userId);
+        List<UserModel> listOfFriends = userService.getFriends(userId);
 
-    //controller
-//    @PostMapping("/addPostToFavourite/{post_id}")
-//    public String addPostToFavourite(@PathVariable Long post_id, HttpSession session){
-//        Long user_id = (Long) session.getAttribute("id");
-//        postServiceImp.addPostToFavouriteList(user_id,post_id);
-//        return "post added to favourite";
-//    }
-    //Add friends serviceImpl
-//    @Override
-//    public String addFriend(Long user_id, Long friend_id) {
-//        if(user_id.equals(friend_id)){
-//            return "You cannot add yourself";
-//        }
-//        if(userRepository.findById(friend_id).isEmpty()){
-//            return "user not found";
-//        }
-//        Person person = userRepository.getById(user_id);
-//        Person friend= userRepository.getById(friend_id);
-//        person.getFriends().add(friend);
-//        friend.getFriends().add(person);
-//        userRepository.save(person);
-//        userRepository.save(friend);
-//        return person.getUsername() + " " + "is now friends with " + friend.getUsername();
-//    }
-//    // controller add friend
-//    @PostMapping("/addPerson/{friend_id}")
-//    public String addFriend(HttpSession session, @PathVariable Long friend_id ){
-//        Long id = (Long) session.getAttribute("id");
-//        userServiceImp.addFriend(id,friend_id);
-//        return "Friends added";
-//    }
+        List<PostModel>  postMadeByFriends = new ArrayList<>();
+
+        for(int i = 0; i > listOfFriends.size(); i++){
+
+//            postMadeByFriends.add(i);
+        }
+
+        return null;
+  }
+@Override
+  public Integer getLike(Long postId){
+      PostModel post = postRepository.getById(postId);
+      return post.getPostLikes().size();
+  }
+@Override
+  public List<UserModel>  addLikes (Long userId, Long postId){
+        UserModel user = userRepository.getById(userId);
+        PostModel post = postRepository.getById(postId);
+        post.getPostLikes().add(user);
+        postRepository.save(post);
+        return post.getPostLikes();
+  }
+
+    @Override
+    public List<PostModel> getListOfFavPosts(Long userId) {
+        UserModel user = userRepository.getById(userId);
+        return user.getFavouritePosts();
+    }
 
 }

@@ -13,7 +13,4 @@ public interface UserRepository extends JpaRepository <UserModel, Long>{
     boolean existsUserModelByEmailAddress(@NotNull String emailAddress);
     UserModel getUserModelByUserId(Long userId);
 
-//    default Optional<UserModel> getUserByEmailAddressAndPassword(String emailAddress, String password) {
-//        return null;
-//    }
 }

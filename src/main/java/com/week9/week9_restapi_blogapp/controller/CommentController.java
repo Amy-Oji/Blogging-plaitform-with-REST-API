@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @RestController
 @RequestMapping("/blog")
@@ -39,4 +40,11 @@ public class CommentController {
         }
         return "Comment not saved";
     }
+
+    @GetMapping("/findCommentByPostId/{postId}")
+        public List findCommentByPostId(@PathVariable Long postId, PostModel postModel){
+
+        return commentService.findCommentByPost(postModel);
+    }
+
 }

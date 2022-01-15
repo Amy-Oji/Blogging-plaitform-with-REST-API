@@ -10,15 +10,16 @@ import java.util.Optional;
 public interface PostService {
     PostModel addPost(UserModel userModel, PostModel postModel);
 
-//    List<PostLikes> getAllPost(UserModel user);
     List<PostModel> getPostsByUser(UserModel userModel);
 
-    void updatePost(PostModel post);
     List<PostModel> viewAllPosts();
     String addPostToFavouriteList(Long userId, Long postId);
 
-
     PostModel getPostById(Long id);
 
+    List <PostModel> getListOfFavPosts(Long userId);
+    List<UserModel>  addLikes (Long userId, Long postId);
 
+    Integer getLike(Long postId);
+    List<PostModel> findPostByFriends(Long userId);
 }

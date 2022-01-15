@@ -3,6 +3,7 @@ package com.week9.week9_restapi_blogapp.controller;
 import com.week9.week9_restapi_blogapp.dto.ResponseDTO;
 import com.week9.week9_restapi_blogapp.dto.Response;
 import com.week9.week9_restapi_blogapp.model.UserModel;
+import com.week9.week9_restapi_blogapp.service.UserService;
 import com.week9.week9_restapi_blogapp.serviceImplementation.UserServiceImplementation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -10,12 +11,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
 public class UserController {
 
-    private final UserServiceImplementation userServiceImplementation;
+    private final UserService userServiceImplementation;
+
 
     @PostMapping("/register")
     public ResponseEntity<UserModel> registerUser(@RequestBody UserModel user) {
@@ -45,48 +48,18 @@ public class UserController {
         userServiceImplementation.addFriend(user_id,friend_id);
         return "Friend added";
     }
+
+    @GetMapping("/listOfFriends/{user_id}")
+    public List<UserModel> getListOfFriends(@PathVariable Long user_id){
+
+            return userServiceImplementation.getFriends(user_id);
+    }
+    @DeleteMapping("/deleteUser/{userId}")
+    public  String deleteUser(@PathVariable Long userId){
+        userServiceImplementation.deleteAccount(userId);
+        return "User Deleted.";
+    }
+
 }
 
 
-//    @Override
-//    public  String addPostToFavouriteList(Long user_id,Long post_id){
-//        Post post = repository.getById(post_id);
-//        Person person = userRepository.getById(user_id);
-//        if(person.getFavourite().contains(post)){
-//            return "Post is already in favourite";
-//        }
-//        person.getFavourite().add(post);
-//        userRepository.save(person);
-//        return  "Post added to favourite";
-//    }
-//    //controller
-//    @PostMapping("/addPostToFavourite/{post_id}")
-//    public String addPostToFavourite(@PathVariable Long post_id, HttpSession session){
-//        Long user_id = (Long) session.getAttribute("id");
-//        postServiceImp.addPostToFavouriteList(user_id,post_id);
-//        return "post added to favourite";
-//    }
-//    //Add friends serviceImpl
-//    @Override
-//    public String addFriend(Long user_id, Long friend_id) {
-//        if(user_id.equals(friend_id)){
-//            return "You cannot add yourself";
-//        }
-//        if(userRepository.findById(friend_id).isEmpty()){
-//            return "user not found";
-//        }
-//        Person person = userRepository.getById(user_id);
-//        Person friend= userRepository.getById(friend_id);
-//        person.getFriends().add(friend);
-//        friend.getFriends().add(person);
-//        userRepository.save(person);
-//        userRepository.save(friend);
-//        return person.getUsername() + " " + "is now friends with " + friend.getUsername();
-//    }
-//    // controller add friend
-//    @PostMapping("/addPerson/{friend_id}")
-//    public String addFriend(HttpSession session, @PathVariable Long friend_id ){
-//        Long id = (Long) session.getAttribute("id");
-//        userServiceImp.addFriend(id,friend_id);
-//        return "Friends added";
-//    }

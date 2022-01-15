@@ -31,13 +31,7 @@ public class PostController {
 
 
 
-//    @PostMapping("/posts/{userId}")
-//    public ResponseEntity<PostModel> createPost(@PathVariable(name = "id") Long u, @RequestBody PostModel postModel, @PathVariable Long userId) {
-////        UserModel author1 = userServicesImpl.getAuthorById(authorId);
 //
-//        return new ResponseEntity<>(postService.addPost(userId, postModel), HttpStatus.OK);
-//    }
-
     @PostMapping("/posts/{id}")
     public ResponseEntity<PostModel> createPost(@PathVariable(name = "id") Long userId, @RequestBody PostModel post) { // Httpsession
         UserModel userModel = userService.getUserById(userId); //getAuthorById(authorId);
@@ -66,5 +60,19 @@ public class PostController {
         postService.addPostToFavouriteList(user_id,post_id);
         return "Post added to favourite";
     }
+    @GetMapping("/listOfFavouritePosts{user_id}")
+    public List<PostModel> getFavouritePosts(Long userId) {
+        return postService.getListOfFavPosts(userId);
+    }
 
+    @PostMapping("/likePost/{user_id}/{post_id}")
+    public String likePost(@PathVariable Long user_id, @PathVariable Long post_id){
+        postService.addLikes(user_id, post_id);
+        return "Post has been liked";
+    }
+
+    @GetMapping("/getPostlikes{post_id}")
+    public Integer getPostLikes(@PathVariable Long post_id) {
+        return postService.getLike(post_id);
+    }
 }
