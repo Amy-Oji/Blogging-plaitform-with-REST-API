@@ -13,9 +13,15 @@ import java.util.Optional;
 @Repository
 public interface PostRepository extends JpaRepository<PostModel, Long> {
 
-    Optional<PostModel> findByPostId(Long id); // postModel was here and not optional
+//    Optional<PostModel> findByPostId(Long id); // postModel was here and not optional
+//    List<PostModel> findAll(PostModel postModel);
+//    List<PostModel> getAllByUserId(Long id);
+    List<PostModel> findAllByUserModel(UserModel userModel);
+    Optional<PostModel> getPostModelByPostId(Long postId); // postmodel was return type.
 
-//    Optional<PostModel> findByPostId();
+
+
+
 //    List<PostModel> findAllByUserModel(UserModel userModel);
 //    PostModel save(PostRequestDTO postRequestDTO);
 }

@@ -10,6 +10,8 @@ import com.week9.week9_restapi_blogapp.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class CommentServiceImplementation implements CommentService {
 
@@ -25,19 +27,32 @@ public class CommentServiceImplementation implements CommentService {
     }
 
     @Override
-    public CommentModel makeComment(Long userId, Long postId, CommentModel comment) {
-
-        UserModel user = userRepository.findById(userId).orElseThrow(NullPointerException::new);
-        PostModel post = postRepository.findByPostId(postId).orElseThrow(NullPointerException::new);
-
-
-        if(user != null && post !=null){
-            comment.setUserId(user);
-            comment.setPostId(post);
-
-            commentRepository.save(comment);
-            return comment;
+    public boolean makeComment(CommentModel commentModel, Long userId, Long postId) {
+        var post = postRepository.getPostModelByPostId(postId);
+        var user = userRepository.findById(userId);
+        CommentModel comment = new CommentModel();
+        comment.setComment(commentModel.getComment());
+        if(post.isPresent() && user.isPresent()){
+            commentModel.setPost(post.get());
+            commentModel.setUser(user.get());
+            post.get().getListOfComments().add(commentModel);
+            postRepository.save(post.get());
+            commentRepository.save(commentModel);
+            return true;
         }
-        return null;
+        return false;
+
+    }
+
+
+    @Override
+    public List<CommentModel> findCommentByPost(PostModel post) {
+        return commentRepository.findCommentByPost(post);
+    }
+
+    @Override
+    public CommentModel getCommentById(Long id) {
+        return commentRepository.findByCommentId(id);
     }
 }
+

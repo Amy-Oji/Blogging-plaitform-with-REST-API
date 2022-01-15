@@ -1,21 +1,24 @@
 package com.week9.week9_restapi_blogapp.service;
 
 import com.week9.week9_restapi_blogapp.dto.PostRequestDTO;
-import com.week9.week9_restapi_blogapp.model.PostLikes;
 import com.week9.week9_restapi_blogapp.model.PostModel;
 import com.week9.week9_restapi_blogapp.model.UserModel;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface PostService {
-    PostModel addPost(Long id, PostModel postModel);
+    PostModel addPost(UserModel userModel, PostModel postModel);
 
-    List<PostLikes> getAllPost(UserModel user);
+//    List<PostLikes> getAllPost(UserModel user);
+    List<PostModel> getPostsByUser(UserModel userModel);
 
     void updatePost(PostModel post);
+    List<PostModel> viewAllPosts();
+    String addPostToFavouriteList(Long userId, Long postId);
 
-    void deletePost(PostModel post);
 
     PostModel getPostById(Long id);
+
 
 }

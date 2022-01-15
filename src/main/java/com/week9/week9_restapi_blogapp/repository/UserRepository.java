@@ -9,8 +9,9 @@ import java.util.Optional;
 
 @Repository
 public interface UserRepository extends JpaRepository <UserModel, Long>{
-    Optional<UserModel> getUserByEmailAddress(String emailAddress);
+    Optional<UserModel> getUserModelByEmailAddress(String emailAddress);
     boolean existsUserModelByEmailAddress(@NotNull String emailAddress);
+    UserModel getUserModelByUserId(Long userId);
 
 //    default Optional<UserModel> getUserByEmailAddressAndPassword(String emailAddress, String password) {
 //        return null;

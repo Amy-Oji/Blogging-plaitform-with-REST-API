@@ -21,15 +21,26 @@ public class CommentModel {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private UserModel userId;
+    private UserModel user;
 
     @ManyToOne
     @JoinColumn(name = "post_id")
-    private PostModel postId;
+    private PostModel post;
 
 //    private String comments;
 
-    @OneToMany
-    private List<CommentLikes> commentLikes = new ArrayList<>();
+//    @OneToMany
+//    private List<CommentLikes> commentLikes = new ArrayList<>();
+
+    public CommentModel(String comment, PostModel post, UserModel user) {
+        this.comment = comment;
+        this.post = post;
+        this.user = user;
+    }
+
+    public CommentModel(Long commentId, String comment) {
+        this.commentId = commentId;
+        this.comment = comment;
+    }
 
 }
